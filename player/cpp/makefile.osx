@@ -1,0 +1,32 @@
+CXX = g++
+#CXX = g++-5
+
+# for MAX_OSX
+#CXXFLAGS = -Wall -std=c++11 -g -pg -pedantic -Werror -Wall -Wextra -pedantic-errors -flat_namespace
+CXXFLAGS = -Wall -std=c++14 -O3 -DNDEBUG -flat_namespace
+
+# for Linux
+#CXXFLAGS = -Wall -std=c++11 -g -pg -pedantic -Werror -Wall -Wextra -pedantic-errors -fPIC
+#CXXFLAGS = -Wall -std=c++11 -O3 -DNDEBUG -fPIC
+
+OBJ_FILES = fake_player.o
+LIB_NAME = libfake_player.so
+
+
+$(LIB_NAME): $(OBJ_FILES)
+	$(CXX) -o $(LIB_NAME)  -shared $(OBJ_FILES)
+
+
+tst_fake_player: $(OBJ_FILES)
+	$(CXX) $(OBJ_FILES) tst_fake_player.cpp -o tst_fake_player
+
+
+all: $(LIB_NAME) tst_fake_player
+
+
+
+clean :
+	rm -f tst_fake_player *~ $(LIB_NAME) $(OBJ_FILES)
+
+%.o: %.cpp %.hpp
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
